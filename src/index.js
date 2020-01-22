@@ -25,6 +25,7 @@ const Count = () => {
 
 const Clock = () => {
   const [date, setDate] = useState(new Date());
+  const { width, height } = useResize();
 
   useEffect(() => {
     let timer = setInterval(() => {
@@ -39,6 +40,9 @@ const Clock = () => {
   return (
     <div>
       <span>{date.toLocaleTimeString()}</span>
+      <span>
+        {width}, {height}
+      </span>
     </div>
   );
 };
@@ -65,6 +69,26 @@ const Alert = () => {
       <button onClick={handleClick}>Alert</button>
     </>
   );
+};
+
+const useResize = () => {
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+
+  const resizeUpdate = () => {
+    setWidth(window.innerWidth);
+    setHeight(window.innerHeight);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", resizeUpdate);
+
+    return () => {
+      window.removeEventListener("resize", resizeUpdate);
+    };
+  });
+
+  return { width, height };
 };
 
 ReactDOM.render(
